@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model; 
 
 class WarehouseResource extends Resource
 {
@@ -119,5 +120,18 @@ class WarehouseResource extends Resource
         ];
     }
 
+       public static function getGlobalSearchResultDetails(Model $record): array  
+    {
+        return [
+            'الكود' => $record->code,
+            'النوع' => WarehouseType::tryFrom($record->type)?->label() ?? $record->type,
+            'الموقع' => $record->location ? substr($record->location, 0, 50) : '---',
+            'الأصناف' => $record->total_items,
+        ];
+    }
     
+    public static function getGlobalSearchResultUrl(Model $record): string  
+    {
+        return self::getUrl('view', ['record' => $record]);
+    }
 }

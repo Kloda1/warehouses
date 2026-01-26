@@ -9,11 +9,24 @@ use Filament\Resources\Pages\EditRecord;
 class EditWarehouse extends EditRecord
 {
     protected static string $resource = WarehouseResource::class;
-
-    protected function getHeaderActions(): array
+  protected function getHeaderActions(): array
     {
         return [
+            Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
+            Actions\RestoreAction::make(),
+            Actions\ForceDeleteAction::make(),
         ];
     }
+    
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+    // protected function getHeaderActions(): array
+    // {
+    //     return [
+    //         Actions\DeleteAction::make(),
+    //     ];
+    // }
 }

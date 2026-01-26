@@ -23,24 +23,30 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
-     public function parent()
+ 
+    public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
-
-     public function children()
+ 
+    public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
 
-     public function items()
+ 
+    public function items()
     {
-          return $this->hasMany(Item::class);
-        
-        //  return collect();
+        return $this->hasMany(Item::class);
     }
 
    
+    public function bills()
+    {
+        return $this->hasManyThrough(Bill::class, Item::class);
+    }
+
+  
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -56,12 +62,35 @@ class Category extends Model
         return $query->whereNotNull('parent_id');
     }
 
-     public function getHierarchicalNameAttribute()
+     public function getFullPathAttribute()
     {
-        if ($this->parent) {
-            return $this->parent->name . ' → ' . $this->name;
+        $path = $this->name;
+        $parent = $this->parent;
+        
+        while ($parent) {
+            $path = $parent->name . ' → ' . $path;
+            $parent = $parent->parent;
         }
-        return $this->name;
+        
+        return $path;
+    }
+
+     public function getDepthAttribute()
+    {
+        $depth = 0;
+        $parent = $this->parent;
+        
+        while ($parent) {
+            $depth++;
+            $parent = $parent->parent;
+        }
+        
+        return $depth;
+    }
+
+     public function getCanDeleteAttribute()
+    {
+        return $this->items_count == 0 && $this->children()->count() == 0;
     }
 
      public function getStatusTextAttribute()
@@ -69,13 +98,26 @@ class Category extends Model
         return $this->is_active ? 'نشط' : 'غير نشط';
     }
 
-     public function hasChildren()
+     public function getAllChildren()
     {
-        return $this->children()->exists();
+        $children = collect();
+        
+        foreach ($this->children as $child) {
+            $children->push($child);
+            $children = $children->merge($child->getAllChildren());
+        }
+        
+        return $children;
     }
 
-     public function hasItems()
+     public function getAllItems()
     {
-        return $this->items_count > 0;
+        $items = $this->items;
+        
+        foreach ($this->getAllChildren() as $child) {
+            $items = $items->merge($child->items);
+        }
+        
+        return $items;
     }
-} 
+}

@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model; 
 
 class ItemResource extends Resource
 {
@@ -152,7 +153,21 @@ class ItemResource extends Resource
             //
         ];
     }
-
+ public static function getGlobalSearchResultDetails(Model $record): array  
+    {
+        return [
+            'الكود' => $record->code,
+            'الفئة' => $record->category?->name ?? '---',
+            'الوحدة' => $record->unit,
+            'الكمية' => number_format($record->current_quantity, 2),
+            'سعر البيع' => '$' . number_format($record->sale_price, 2),
+        ];
+    }
+    
+    public static function getGlobalSearchResultUrl(Model $record): string  
+    {
+        return self::getUrl('view', ['record' => $record]);
+    }
     public static function getPages(): array
     {
         return [
