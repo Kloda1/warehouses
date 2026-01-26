@@ -15,18 +15,17 @@ return new class extends Migration
             $table->foreignId('item_id')->constrained('items');
             $table->foreignId('warehouse_id')->nullable()->constrained('warehouses');
             
-            // الكميات
-            $table->decimal('quantity', 15, 2);        // كان QUANTITE
-            $table->decimal('received_quantity', 15, 2)->default(0); // للإستلام
+        
+            $table->decimal('quantity', 15, 2);        //   QUANTITE
+            $table->decimal('received_quantity', 15, 2)->default(0); //  
             
-            // الأسعار
-            $table->decimal('unit_price', 15, 2);      // كان PRICE
+          
+            $table->decimal('unit_price', 15, 2);      //   PRICE
             $table->decimal('total_price', 15, 2)->storedAs('quantity * unit_price');
             
-            // التكلفة
+ 
             $table->decimal('cost_price', 15, 2)->nullable();
-            
-            // المخزون بعد الحركة
+           
             $table->decimal('stock_before', 15, 2)->default(0);
             $table->decimal('stock_after', 15, 2)->default(0);
             
