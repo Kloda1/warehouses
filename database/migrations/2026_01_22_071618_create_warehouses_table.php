@@ -14,6 +14,8 @@ return new class extends Migration
               $table->string('code')->unique();          //   NUMERO
             $table->string('name');                    //   NAMEINV
             $table->string('type')->default('central'); // central/branch
+            $table->foreignId('parent_id')->nullable()->constrained('warehouses')->onDelete('cascade');
+                    
             $table->text('location')->nullable();
             $table->string('contact_person')->nullable();
             $table->string('phone')->nullable();
