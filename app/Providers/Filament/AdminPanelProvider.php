@@ -19,6 +19,11 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+
+ 
+ 
+
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -29,7 +34,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
+<<<<<<< HEAD
                 'primary' => Color::Blue,
+=======
+                'primary' => Color::Amber,
+>>>>>>> a03fdd8cb360dd7d276e5dad2208802d54cafc44
             ])
             ->brandLogo(asset('images/loogoo.png'))
             ->brandLogoHeight('3rem')
@@ -58,6 +67,66 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+ 
+
+                ->font('Cairo')
+            // ->renderHook(
+            //     'panels::body.start',
+            //     fn (): string => '<div dir="rtl">',
+            // )
+            // ->renderHook(
+            //     'panels::body.end',
+            //     fn (): string => '</div>',
+            // );
+
+                   ->renderHook(
+            'panels::head.start',
+            fn (): string => '
+                <style>
+                    :root {
+                        direction: rtl;
+                        font-family: "Cairo", sans-serif;
+                    }
+                    body {
+                        text-align: right;
+                        font-family: "Cairo", sans-serif;
+                    }
+                    .fi-btn {
+                        flex-direction: row-reverse;
+                        gap: 0.5rem;
+                    }
+                    .fi-sidebar-nav {
+                        text-align: right;
+                    }
+                    .fi-dropdown-list {
+                        text-align: right;
+                    }
+                    .fi-table-header-cell {
+                        text-align: right;
+                    }
+                    .fi-input-wrapper {
+                        text-align: right;
+                    }
+                    .fi-modal-header {
+                        text-align: right;
+                    }
+                    .fi-modal-content {
+                        text-align: right;
+                    }
+                    .fi-modal-footer {
+                        justify-content: flex-start;
+                        flex-direction: row-reverse;
+                    }
+                </style>
+            ',
+        );
     }
+        //     ->brandLogo(asset('images/logo.png'))
+        //     ->brandLogoHeight('40px')
+        //     ->favicon(asset('images/favicon.png'))
+        //    ->viteTheme('resources/css/filament/admin/theme.css')
+
+
+      
 }

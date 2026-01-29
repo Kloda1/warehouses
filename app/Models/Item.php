@@ -58,19 +58,7 @@ class Item extends Model
         return $this->belongsTo(User::class, 'last_updated_by');
     }
  
-    public function inventoryTransactions()
-    {
-         return $this->hasMany(InventoryTransaction::class);
-        return collect();
-    }
-
  
-    public function warehouseItems()
-    {
-        return $this->hasMany(WarehouseItem::class);
-        return collect();
-    }
-
     
     public function scopeActive($query)
     {

@@ -17,16 +17,16 @@ class Customer extends Model
         'type',
         'contact_person',
         'phone',
-        'email',
+        'email', 
         'address',
-        'tax_number',
+        'tax_number', 
         'commercial_register',
-        'total_sales',
+        'total_sales',//
         'balance',
         'credit_limit',
-        'total_orders',
+        'total_orders', //
         'is_active',
-        'notes',
+        'notes',//
     ];
 
     protected $casts = [

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
+
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
@@ -17,20 +17,21 @@ return new class extends Migration
             $table->string('contact_person')->nullable(); //   CONTACTNAME
             $table->string('phone')->nullable();       //   TEL
             $table->text('address')->nullable();       //   ADDRESS
-            
-             $table->foreignId('primary_warehouse_id')->nullable()->constrained('warehouses'); // كان NUMINV1
+
+
+            $table->foreignId('primary_warehouse_id')->nullable()->constrained('warehouses'); // كان NUMINV1
             $table->foreignId('secondary_warehouse_id')->nullable()->constrained('warehouses'); // كان NUMINV2
-            
-             $table->decimal('credit_limit', 15, 2)->default(0);
+
+            $table->decimal('credit_limit', 15, 2)->default(0);
             $table->decimal('current_balance', 15, 2)->default(0);
             $table->decimal('total_purchases', 15, 2)->default(0);
-            
-             $table->date('start_date')->nullable();    //   BEGINDATE
-            
+
+            $table->date('start_date')->nullable();    //   BEGINDATE
+
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index('code');
             $table->index('name');
             $table->index('type');
@@ -38,7 +39,7 @@ return new class extends Migration
         });
     }
 
-    
+
     public function down(): void
     {
         Schema::dropIfExists('customers');

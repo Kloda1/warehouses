@@ -1,0 +1,19 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+:root {
+    --font-family: 'Cairo', sans-serif;
+    --font-family-sans: 'Cairo', sans-serif;
+}
+
+ 
+[dir="rtl"] {
+    text-align: right;
+}
+
+[dir="rtl"] .fi-btn {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .fi-dropdown-list {
+    text-align: right;
+}
