@@ -112,7 +112,20 @@ class Warehouse extends Model
                     ->withPivot(['current_quantity', 'reserved_quantity', 'minimum_quantity', 'maximum_quantity'])
                     ->withTimestamps();
     }
-
+  public function sourceBills()
+    {
+        return $this->hasMany(Bill::class, 'source_warehouse_id');
+    }
+    
+    public function destinationBills()
+    {
+        return $this->hasMany(Bill::class, 'destination_warehouse_id');
+    }
+    
+    public function billRecords()
+    {
+        return $this->hasMany(BillRecord::class);
+    }
      public function generateCode(): void
     {
         if (empty($this->code)) {
@@ -121,7 +134,7 @@ class Warehouse extends Model
                 WarehouseType::BRANCH => 'WH-B-',
                 WarehouseType::STORE => 'WH-S-',
                 WarehouseType::TEMPORARY => 'WH-T-',
-                WarehouseType::VIRTUAL => 'WH-V-',
+                
             };
             
             $this->code = $prefix . str_pad($this->id, 4, '0', STR_PAD_LEFT);
