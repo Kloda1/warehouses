@@ -34,12 +34,10 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-<<<<<<< HEAD
-                'primary' => Color::Blue,
-=======
-                'primary' => Color::Amber,
->>>>>>> a03fdd8cb360dd7d276e5dad2208802d54cafc44
+                'primary' => Color::Blue
+                // 'primary' => Color::Amber,
             ])
+            ->topNavigation()
             ->brandLogo(asset('images/loogoo.png'))
             ->brandLogoHeight('3rem')
             ->favicon(asset('images/loogoo.png'))
