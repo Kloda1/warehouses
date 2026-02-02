@@ -21,9 +21,9 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
-    protected static ?string $navigationLabel = 'الفئات';
+    protected static ?string $navigationLabel = 'أصناف';
     protected static ?string $modelLabel = 'فئة';
-    protected static ?string $pluralModelLabel = 'الفئات';
+    protected static ?string $pluralModelLabel = 'أصناف';
     protected static ?string $navigationGroup = 'التصنيفات';
     protected static ?int $navigationSort = 1;
     protected static ?string $recordTitleAttribute = 'name';

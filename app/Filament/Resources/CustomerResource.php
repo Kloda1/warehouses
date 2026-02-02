@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists\Components\Section;
@@ -37,68 +38,84 @@ class CustomerResource extends Resource
                     ->description('قم بتعبئة الحقول التالية :')
                     ->schema(components: [
                         Forms\Components\TextInput::make('code')
+                            ->label('الرمز')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('name')
+                            ->label(label: 'الاسم')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('phone')
+                            ->label(label: 'رقم الهاتف')
                             ->tel()
                             ->maxLength(255)
                             ->default(null),
                         Forms\Components\TextInput::make('email')
+                            ->label(label: 'الايميل')
                             ->maxLength(255)
                             ->email(),
                         Forms\Components\Textarea::make('address')
+                            ->label('العنوان')
+                            ->default(null)
+                            ->columnSpanFull(),
+                    ])->columns(4),
+
+                Forms\Components\Section::make()
+                    // ->description('قم بتعبئة الحقول التالية :')
+                    ->schema(components: [
+                        Forms\Components\TextInput::make('tax_number')
+                            ->numeric()
+                            ->required()
                             ->default(null),
+                        Forms\Components\TextInput::make('commercial_register')
+                            ->required()
+                            ->default(null),
+                        Forms\Components\TextInput::make('balance')
+                            ->required()
+                            ->maxLength(255)
+                            ->default(null),
+                        Forms\Components\TextInput::make('current_balance')
+                            ->required()
+                            ->numeric()
+                            ->default(0.00),
+                        Forms\Components\TextInput::make('total_sales')
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\TextInput::make('total_orders')
+                            ->required()
+                            ->numeric()
+                            ->default(null),
+                        Forms\Components\TextInput::make('credit_limit')
+                            ->required()
+                            ->numeric()
+                            ->default(0.00),
+
+                        Forms\Components\TextInput::make('total_purchases')
+                            ->required()
+                            ->numeric()
+                            ->default(0.00),
+                        Forms\Components\TextInput::make('type')
+                            ->maxLength(255)
+                            ->default(null),
+                        Forms\Components\TextInput::make('contact_person')
+                            ->maxLength(255)
+                            ->default(null),
+
+                        Forms\Components\TextInput::make('primary_warehouse_id')
+                            ->numeric()
+                            ->default(null),
+                        Forms\Components\TextInput::make('secondary_warehouse_id')
+                            ->numeric()
+                            ->default(null),
+                        // Forms\Components\DatePicker::make('start_date'),
+
+                        Forms\Components\Textarea::make('notes')
+                            ->columnSpanFull(),
+                        Forms\Components\Toggle::make('is_active')
+                            ->required()
+                            ->columnSpanFull(),
                     ])->columns(3),
 
-                Forms\Components\TextInput::make('tax_number')
-                    ->numeric()
-                    ->required()
-                    ->default(null),
-                Forms\Components\TextInput::make('commercial_register')
-                    ->required()
-                    ->default(null),
-                Forms\Components\TextInput::make('total_sales')
-                    ->numeric()
-                    ->required(),
-                Forms\Components\TextInput::make('balance')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('type')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('contact_person')
-                    ->maxLength(255)
-                    ->default(null),
-
-                Forms\Components\TextInput::make('primary_warehouse_id')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('secondary_warehouse_id')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('total_orders')
-                    ->required()
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('credit_limit')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\TextInput::make('current_balance')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\TextInput::make('total_purchases')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\DatePicker::make('start_date'),
-                Forms\Components\Textarea::make('notes'),
-                Forms\Components\Toggle::make('is_active')
-                    ->required(),
             ]);
     }
 
@@ -174,7 +191,14 @@ class CustomerResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title(' تم الحذف بنجاح.')
+                            ->icon('heroicon-o-x-circle')
+                            ->color('danger')
+                    )
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -193,22 +217,21 @@ class CustomerResource extends Resource
     //             TextEntry::make('content'),
     //         ]);
     // }
-
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-        public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
-        public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return 'إدارة النظام';
     }
-    
+
 
     public static function getPages(): array
     {

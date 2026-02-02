@@ -20,8 +20,8 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\MenuItem;
 
- 
- 
+
+
 
 
 class AdminPanelProvider extends PanelProvider
@@ -34,7 +34,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Blue
+                'primary' => Color::Blue,
+                'danger' => Color::Red,
+                'gray' => Color::Zinc,
+                'info' => Color::Blue,
+                'success' => Color::Green,
+                'warning' => Color::Amber,
                 // 'primary' => Color::Amber,
             ])
             ->topNavigation()
@@ -50,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                // FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -66,9 +71,9 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
- 
 
-                ->font('Cairo')
+
+            ->font('Cairo')
             // ->renderHook(
             //     'panels::body.start',
             //     fn (): string => '<div dir="rtl">',
@@ -78,9 +83,9 @@ class AdminPanelProvider extends PanelProvider
             //     fn (): string => '</div>',
             // );
 
-                   ->renderHook(
-            'panels::head.start',
-            fn (): string => '
+            ->renderHook(
+                'panels::head.start',
+                fn(): string => '
                 <style>
                     :root {
                         direction: rtl;
@@ -118,13 +123,13 @@ class AdminPanelProvider extends PanelProvider
                     }
                 </style>
             ',
-        );
+            );
     }
-        //     ->brandLogo(asset('images/logo.png'))
-        //     ->brandLogoHeight('40px')
-        //     ->favicon(asset('images/favicon.png'))
-        //    ->viteTheme('resources/css/filament/admin/theme.css')
+    //     ->brandLogo(asset('images/logo.png'))
+    //     ->brandLogoHeight('40px')
+    //     ->favicon(asset('images/favicon.png'))
+    //    ->viteTheme('resources/css/filament/admin/theme.css')
 
 
-      
+
 }
