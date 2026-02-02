@@ -21,14 +21,20 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationLabel = 'الزبائن';
+    protected static ?string $modelLabel = 'زبون';
+    protected static ?string $pluralModelLabel = 'الزبائن';
+    protected static ?string $activeNavigationIcon = 'heroicon-o-lifebuoy';
+    protected static ?int $navigationSort = 1;
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Section::make('المعلومات الشخصية')
-                    ->description('قم بتعبئة الحقول التالية')
+                    ->description('قم بتعبئة الحقول التالية :')
                     ->schema(components: [
                         Forms\Components\TextInput::make('code')
                             ->required()
@@ -168,6 +174,7 @@ class CustomerResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -193,6 +200,15 @@ class CustomerResource extends Resource
             //
         ];
     }
+        public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+        public static function getNavigationGroup(): ?string
+    {
+        return 'إدارة النظام';
+    }
+    
 
     public static function getPages(): array
     {

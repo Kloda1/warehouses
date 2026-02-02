@@ -12,13 +12,17 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Database\Eloquent\Model; 
+use Illuminate\Database\Eloquent\Model;
 
 class WarehouseResource extends Resource
 {
     protected static ?string $model = Warehouse::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'المستودعات';
+    protected static ?string $modelLabel = 'مستودع';
+    protected static ?string $pluralModelLabel = 'المستودعات';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -110,6 +114,10 @@ class WarehouseResource extends Resource
             //
         ];
     }
+        public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function getPages(): array
     {
@@ -120,7 +128,7 @@ class WarehouseResource extends Resource
         ];
     }
 
-       public static function getGlobalSearchResultDetails(Model $record): array  
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'الكود' => $record->code,
@@ -129,8 +137,8 @@ class WarehouseResource extends Resource
             'الأصناف' => $record->total_items,
         ];
     }
-    
-    public static function getGlobalSearchResultUrl(Model $record): string  
+
+    public static function getGlobalSearchResultUrl(Model $record): string
     {
         return self::getUrl('view', ['record' => $record]);
     }

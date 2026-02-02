@@ -12,13 +12,19 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Database\Eloquent\Model; 
+use Illuminate\Database\Eloquent\Model;
 
 class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+    protected static ?string $navigationLabel = 'المواد';
+    protected static ?string $modelLabel = 'مادة';
+    protected static ?string $pluralModelLabel = 'المواد';
+    protected static ?string $navigationGroup = 'التصنيفات';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -153,7 +159,11 @@ class ItemResource extends Resource
             //
         ];
     }
- public static function getGlobalSearchResultDetails(Model $record): array  
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'الكود' => $record->code,
@@ -163,8 +173,8 @@ class ItemResource extends Resource
             'سعر البيع' => '$' . number_format($record->sale_price, 2),
         ];
     }
-    
-    public static function getGlobalSearchResultUrl(Model $record): string  
+
+    public static function getGlobalSearchResultUrl(Model $record): string
     {
         return self::getUrl('view', ['record' => $record]);
     }

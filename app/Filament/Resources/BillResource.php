@@ -25,17 +25,15 @@ use Closure;
 class BillResource extends Resource
 {
 
-
-
-
-
-
     protected static ?string $model = Bill::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationLabel = 'المذكرات';  
-    protected static ?string $modelLabel = 'مذكرة';  
-    protected static ?string $pluralModelLabel = 'المذكرات';  
-    protected static ?string $navigationGroup = 'المخزون';
+    protected static ?string $navigationLabel = 'المذكرات';
+    protected static ?string $modelLabel = 'مذكرة';
+    protected static ?string $pluralModelLabel = 'المذكرات';
+    protected static ?int $navigationSort = 2;
+
+
+    // protected static ?string $navigationGroup = 'المخزون';
     public static function form(Form $form): Form
     {
         return $form;
@@ -316,7 +314,7 @@ class BillResource extends Resource
                         ->label('إضافة/تعديل مواد')
                         ->icon('heroicon-o-shopping-cart')
                         ->color('primary')
-    ->url(fn ($record) => BillResource::getUrl('items', ['record' => $record]))  
+                        ->url(fn($record) => BillResource::getUrl('items', ['record' => $record]))
                         ->openUrlInNewTab(false),
 
                     Tables\Actions\Action::make('approve')
@@ -370,6 +368,10 @@ class BillResource extends Resource
             ]);
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
     public static function getPages(): array
     {
         return [
@@ -385,7 +387,7 @@ class BillResource extends Resource
             'index' => Pages\ListBills::route('/'),
             'create' => Pages\CreateBill::route('/create'),
 
-        'items' => Pages\AddBillItems::route('/{record}/items'),
+            'items' => Pages\AddBillItems::route('/{record}/items'),
 
             'edit' => Pages\EditBill::route('/{record}/edit'),
             'view' => Pages\ViewBill::route('/{record}'),
