@@ -30,6 +30,8 @@ class BillResource extends Resource
     protected static ?string $navigationLabel = 'المذكرات';
     protected static ?string $modelLabel = 'مذكرة';
     protected static ?string $pluralModelLabel = 'المذكرات';
+    protected static ?string $activeNavigationIcon = 'heroicon-o-chevron-double-down';
+
     protected static ?int $navigationSort = 2;
 
 

@@ -20,10 +20,6 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\MenuItem;
 
-
-
-
-
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -37,7 +33,6 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Blue,
                 'danger' => Color::Red,
                 'gray' => Color::Zinc,
-                'info' => Color::Blue,
                 'success' => Color::Green,
                 'warning' => Color::Amber,
                 // 'primary' => Color::Amber,

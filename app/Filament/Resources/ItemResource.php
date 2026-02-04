@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class ItemResource extends Resource
 {
@@ -23,6 +24,8 @@ class ItemResource extends Resource
     protected static ?string $modelLabel = 'مادة';
     protected static ?string $pluralModelLabel = 'المواد';
     protected static ?string $navigationGroup = 'التصنيفات';
+    protected static ?string $activeNavigationIcon = 'heroicon-o-chevron-double-down';
+
 
     protected static ?int $navigationSort = 3;
 
@@ -30,56 +33,70 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('category_id')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('unit')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('purchase_price')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('sale_price')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('wholesale_price')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('minimum_quantity')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\TextInput::make('opening_balance')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\TextInput::make('current_quantity')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\TextInput::make('reserved_quantity')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\TextInput::make('barcode')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\Toggle::make('is_active')
-                    ->required(),
-                Forms\Components\TextInput::make('created_by')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('last_updated_by')
-                    ->numeric()
-                    ->default(null),
+                Forms\Components\Section::make('المعلومات الأساسية للمادة')
+                    ->description('قم بتعبئة جميع الحقول التالية :')
+                    ->schema(components: [
+                        Forms\Components\TextInput::make('code')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('minimum_quantity')
+                            ->required()
+                            ->numeric()
+                            ->default(0.00),
+                        Forms\Components\TextInput::make('opening_balance')
+                            ->required()
+                            ->numeric()
+                            ->default(0.00),
+                        Forms\Components\TextInput::make('current_quantity')
+                            ->required()
+                            ->numeric()
+                            ->default(0.00),
+                        Forms\Components\TextInput::make('reserved_quantity')
+                            ->required()
+                            ->numeric()
+                            ->default(0.00),
+                        Forms\Components\TextInput::make('unit')
+                            ->required()
+                            ->maxLength(255)
+                            ->columnSpan(2),
+                        Forms\Components\Toggle::make('is_active')
+                            ->required()
+                            ->columnSpanFull(),
+                    ])->columns(4),
+
+                Forms\Components\Section::make('معلومات إضافية :')
+                    ->description('')
+                    ->schema(components: [
+                        Forms\Components\TextInput::make('category_id')
+                            ->numeric()
+                            ->default(null),
+                        Forms\Components\TextInput::make('purchase_price')
+                            ->numeric()
+                            ->default(null),
+                        Forms\Components\TextInput::make('sale_price')
+                            ->numeric()
+                            ->default(null),
+                        Forms\Components\TextInput::make('wholesale_price')
+                            ->numeric()
+                            ->default(null),
+                        Forms\Components\TextInput::make('barcode')
+                            ->maxLength(255)
+                            ->default(null),
+
+                        Forms\Components\TextInput::make('created_by')
+                            ->numeric()
+                            ->default(null),
+                        Forms\Components\TextInput::make('last_updated_by')
+                            ->numeric()
+                            ->default(null),
+                        Forms\Components\Textarea::make('description')
+                            ->columnSpan(2),
+                    ])->columns(3),
+
+
             ]);
     }
 
@@ -144,12 +161,19 @@ class ItemResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title(' تم الحذف بنجاح.')
+                            ->icon('heroicon-o-x-circle')
+                            ->color('danger')
+                    )
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ]);
     }
 

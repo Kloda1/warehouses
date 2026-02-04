@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -21,6 +22,8 @@ class SupplierResource extends Resource
     protected static ?string $navigationLabel = 'الموردين';
     protected static ?string $modelLabel = 'مورد';
     protected static ?string $pluralModelLabel = 'الموردين';
+    protected static ?string $activeNavigationIcon = 'heroicon-o-chevron-double-down';
+
     protected static ?int $navigationSort = 2;
 
 
@@ -109,7 +112,16 @@ class SupplierResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                                Tables\Actions\DeleteAction::make()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title(' تم الحذف بنجاح.')
+                            ->icon('heroicon-o-x-circle')
+                            ->color('danger')
+                    )
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

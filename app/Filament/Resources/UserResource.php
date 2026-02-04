@@ -26,6 +26,8 @@ class UserResource extends Resource
     protected static ?string $navigationLabel = 'المستخدمين';
     protected static ?string $modelLabel = 'مستخدم';
     protected static ?string $pluralModelLabel = 'المستخدمين';
+    protected static ?string $activeNavigationIcon = 'heroicon-o-chevron-double-down';
+
     protected static ?int $navigationSort = 3;
 
 

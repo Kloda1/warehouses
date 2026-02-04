@@ -27,7 +27,7 @@ class EditCustomer extends EditRecord
     {
         return Notification::make()
             ->success()
-            ->title(' .تم التعديل بنجاح')
+            ->title('تم التعديل بنجاح.')
             ->icon('heroicon-o-information-circle')
             ->color('success');
     }

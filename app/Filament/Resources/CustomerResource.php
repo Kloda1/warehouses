@@ -26,7 +26,7 @@ class CustomerResource extends Resource
     protected static ?string $navigationLabel = 'الزبائن';
     protected static ?string $modelLabel = 'زبون';
     protected static ?string $pluralModelLabel = 'الزبائن';
-    protected static ?string $activeNavigationIcon = 'heroicon-o-lifebuoy';
+    protected static ?string $activeNavigationIcon = 'heroicon-o-chevron-double-down';
     protected static ?int $navigationSort = 1;
 
 
@@ -39,29 +39,34 @@ class CustomerResource extends Resource
                     ->schema(components: [
                         Forms\Components\TextInput::make('code')
                             ->label('الرمز')
+                            ->placeholder('الرمز')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('name')
                             ->label(label: 'الاسم')
+                            ->placeholder('الاسم')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('phone')
                             ->label(label: 'رقم الهاتف')
+                            ->placeholder('09')
                             ->tel()
                             ->maxLength(255)
                             ->default(null),
                         Forms\Components\TextInput::make('email')
                             ->label(label: 'الايميل')
+                            ->placeholder('')
                             ->maxLength(255)
                             ->email(),
                         Forms\Components\Textarea::make('address')
                             ->label('العنوان')
+                            ->placeholder('عنوان الزبون')
                             ->default(null)
                             ->columnSpanFull(),
                     ])->columns(4),
 
-                Forms\Components\Section::make()
-                    // ->description('قم بتعبئة الحقول التالية :')
+                Forms\Components\Section::make('المعلومات الأساسية:')
+                    ->description('يجب تعبئة جميع هذه الحقول:')
                     ->schema(components: [
                         Forms\Components\TextInput::make('tax_number')
                             ->numeric()
@@ -94,6 +99,10 @@ class CustomerResource extends Resource
                             ->required()
                             ->numeric()
                             ->default(0.00),
+                    ])->columns(3),
+                Forms\Components\Section::make(' معلومات أخيرة:')
+                    // ->description('')
+                    ->schema([
                         Forms\Components\TextInput::make('type')
                             ->maxLength(255)
                             ->default(null),
@@ -110,11 +119,12 @@ class CustomerResource extends Resource
                         // Forms\Components\DatePicker::make('start_date'),
 
                         Forms\Components\Textarea::make('notes')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->placeholder('الملاحظات .....'),
                         Forms\Components\Toggle::make('is_active')
                             ->required()
                             ->columnSpanFull(),
-                    ])->columns(3),
+                    ])->columns(4),
 
             ]);
     }

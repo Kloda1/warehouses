@@ -25,6 +25,8 @@ class CategoryResource extends Resource
     protected static ?string $modelLabel = 'فئة';
     protected static ?string $pluralModelLabel = 'أصناف';
     protected static ?string $navigationGroup = 'التصنيفات';
+    protected static ?string $activeNavigationIcon = 'heroicon-o-chevron-double-down';
+
     protected static ?int $navigationSort = 1;
     protected static ?string $recordTitleAttribute = 'name';
 
