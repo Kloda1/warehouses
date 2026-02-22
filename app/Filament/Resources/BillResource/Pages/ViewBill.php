@@ -22,6 +22,26 @@ class ViewBill extends ViewRecord
                 ->url(fn () => BillResource::getUrl('items', ['record' => $this->record->id])), 
         ];
     }
+
+    
+
+//     protected function getHeaderActions(): array
+// {
+//     return [
+//         Actions\EditAction::make(),
+//         Actions\Action::make('add_items')
+//             ->label('➕ إضافة مواد')
+//             ->url(fn (Bill $record): string => static::getUrl('items', ['record' => $record->id]))
+//             ->color('success'),
+//     ];
+// }
+
+public function getContent()
+{
+    return view('filament.resources.bill-resource.pages.view-bill', [
+        'bill' => $this->record,
+    ]);
+}
 }
 // namespace App\Filament\Resources\BillResource\Pages;
 
